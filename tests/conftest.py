@@ -1,6 +1,8 @@
+from typing import Any, Generator
+
 import pytest
-from typing import Generator, Any
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 

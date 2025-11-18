@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 from math import ceil
 from typing import Final
 
-from app.models import Interval, StatsInterval, Topic, TopicStats
 from app.core import config
+from app.models import Interval, StatsInterval, Topic, TopicStats
 
 SLOT = timedelta(minutes=config.GRID.SLOT_MINUTES_SIZE)
 RATIO_CONFIG: Final[list[tuple[float, str]]] = [

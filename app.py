@@ -1,11 +1,12 @@
 import contextlib
+import os
 import subprocess
 from collections.abc import Generator
 from contextlib import contextmanager
-from typer import Exit, Typer, Option, Argument
+
 from dotenv import load_dotenv
 from testcontainers.redis import RedisContainer
-import os
+from typer import Argument, Exit, Option, Typer
 
 parser = Typer()
 

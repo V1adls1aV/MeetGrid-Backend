@@ -1,6 +1,8 @@
-import pytest_asyncio
 from typing import AsyncIterator
+
+import pytest_asyncio
 from redis.asyncio import Redis
+
 from app.core import config
 
 

@@ -1,8 +1,10 @@
-from pydantic import computed_field
 from pathlib import Path
+
+from pydantic import computed_field
+from pydantic_config import SettingsConfig, SettingsModel
+
 from .db import RedisSettings
 from .grid import GridSettings
-from pydantic_config import SettingsConfig, SettingsModel
 
 PUBLIC_CONFIG_PATH = Path("config.yaml")
 

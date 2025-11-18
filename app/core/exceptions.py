@@ -1,4 +1,5 @@
 from typing import Final
+
 from fastapi import Request
 from fastapi.responses import JSONResponse
 

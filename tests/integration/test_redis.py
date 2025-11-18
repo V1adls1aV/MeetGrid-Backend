@@ -1,14 +1,9 @@
 from __future__ import annotations
 
-import os
-from datetime import datetime, timedelta
-from typing import AsyncIterator, Iterator
+from datetime import datetime
 
 import pytest
-import pytest_asyncio
-import inject
 from redis.asyncio import Redis
-from testcontainers.redis import RedisContainer
 
 from app.core.exceptions import TopicNotFoundError
 from app.db import redis as redis_repo

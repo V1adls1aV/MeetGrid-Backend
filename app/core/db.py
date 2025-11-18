@@ -1,6 +1,6 @@
-from pydantic import BaseModel
-from pydantic import computed_field
 from functools import cached_property
+
+from pydantic import BaseModel, computed_field
 
 
 class RedisSettings(BaseModel):

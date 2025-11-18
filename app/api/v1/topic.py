@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, status
+
 from app.models import (
     ConstraintsPayload,
     CreatedTopic,

@@ -1,14 +1,14 @@
 from contextlib import asynccontextmanager
 
+import inject
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from redis.asyncio import Redis
 
 from app.api import api_router
 from app.core import config
 from app.core.di import configure_di
 from app.core.exceptions import ServiceError, exception_handler
-import inject
-from redis.asyncio import Redis
 
 
 @asynccontextmanager

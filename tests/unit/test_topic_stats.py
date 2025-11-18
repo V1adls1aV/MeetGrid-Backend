@@ -1,10 +1,11 @@
 from __future__ import annotations
-from functools import partial
+
 from datetime import datetime
+from functools import partial
 
 from app.models import Interval
-from app.services import build_topic_stats
-from tests.unit.util import topic, make_interval, make_simple_tuple, simplify
+from app.service import build_topic_stats
+from tests.unit.util import make_interval, make_simple_tuple, simplify, topic
 
 
 def test_returns_empty_stats_without_constraints() -> None:

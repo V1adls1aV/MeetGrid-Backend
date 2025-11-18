@@ -1,7 +1,8 @@
-from app.models import Topic
 import inject
 from redis.asyncio import Redis
+
 from app.core.exceptions import TopicNotFoundError
+from app.models import Topic
 
 
 @inject.autoparams("redis")
