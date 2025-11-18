@@ -1,13 +1,10 @@
-from __future__ import annotations
-
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import api_router
-
-ALLOW_ORIGINS = ["*"]
+from app.core import config
 
 
 @asynccontextmanager
@@ -16,10 +13,10 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="MeetGrid Backend", lifespan=lifespan)
+app = FastAPI(title=config.APP_NAME, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOW_ORIGINS,
+    allow_origins=config.ALLOW_ORIGINS_LIST,
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,

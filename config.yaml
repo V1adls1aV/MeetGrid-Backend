@@ -1,0 +1,4 @@
+APP_NAME: "MeetGrid Backend"
+
+GRID:
+  SLOT_MINUTES_SIZE: 15

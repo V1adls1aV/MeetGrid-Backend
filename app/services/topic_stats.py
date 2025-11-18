@@ -6,8 +6,9 @@ from math import ceil
 from typing import Final
 
 from app.models import Interval, StatsInterval, Topic, TopicStats
+from app.core import config
 
-SLOT = timedelta(minutes=15)
+SLOT = timedelta(minutes=config.GRID.SLOT_MINUTES_SIZE)
 RATIO_CONFIG: Final[list[tuple[float, str]]] = [
     (0.9, "blocks_90"),
     (0.7, "blocks_70"),
@@ -22,7 +23,7 @@ def build_topic_stats(topic: Topic) -> TopicStats:
     if max_people == 0:
         return TopicStats()
 
-    ratios = [config[0] for config in RATIO_CONFIG]
+    ratios = [c[0] for c in RATIO_CONFIG]
     people_ranges = _compute_people_ranges(max_people, ratios)
     slot_labels = _classify_slots_by_ratio(bucket_counts, people_ranges)
 
