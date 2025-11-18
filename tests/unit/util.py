@@ -14,7 +14,6 @@ def topic(constraints: list[Interval], votes: dict[str, list[Interval]]) -> Topi
         constraints=constraints,
         votes=votes,
         created_at=datetime(2025, 1, 1, 8, 0),
-        ttl_days=30,
     )
 
 

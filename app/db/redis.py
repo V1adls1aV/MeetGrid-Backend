@@ -1,13 +1,19 @@
 import inject
 from redis.asyncio import Redis
 
+from app.core import config
 from app.core.exceptions import TopicNotFoundError
 from app.models import Topic
 
 
 @inject.autoparams("redis")
-async def save_topic(topic: Topic, redis: Redis) -> None:
-    await redis.set(f"topic:{topic.topic_id}", topic.model_dump_json())
+async def save_topic(topic: Topic, redis: Redis, *, refresh_ttl: bool = False) -> None:
+    await redis.set(
+        f"topic:{topic.topic_id}",
+        topic.model_dump_json(),
+        ex=config.REDIS.TTL_SECONDS if refresh_ttl else None,
+        keepttl=not refresh_ttl,
+    )
 
 
 @inject.autoparams("redis")

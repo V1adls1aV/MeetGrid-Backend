@@ -7,14 +7,15 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.121.2",
     "redis>=7.0.1",
-    "pytest>=8.3.2",
     "pydantic-config>=0.3.0",
-    "pytest-asyncio>=0.23.8",
     "inject>=5.3.0",
+    "nanoid>=2.0.0",
 ]
 
 [dependency-groups]
 dev = [
     "ruff>=0.14.5",
     "testcontainers[redis]>=4.13.3",
+    "pytest>=8.3.2",
+    "pytest-asyncio>=0.23.8",
 ]

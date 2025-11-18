@@ -23,5 +23,11 @@ class TopicNotFoundError(ServiceError):
     status_code: Final[int] = 404
 
 
+class ForbiddenActionError(ServiceError):
+    """Only topic admin can perform this action."""
+
+    status_code: Final[int] = 403
+
+
 def exception_handler(request: Request, exc: ServiceError) -> JSONResponse:
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.message})

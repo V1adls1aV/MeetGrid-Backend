@@ -21,7 +21,6 @@ def _topic(topic_id: str) -> Topic:
         constraints=[make_interval(now, hours=(0, 1))],
         votes={"bob": [make_interval(now, minutes=(0, 30))]},
         created_at=now,
-        ttl_days=7,
     )
 
 

@@ -18,7 +18,6 @@ class Topic(BaseModel):
     constraints: list[Interval] = Field(default_factory=list)
     votes: dict[str, list[Interval]] = Field(default_factory=dict)
     created_at: datetime
-    ttl_days: int
 
 
 class TopicCreate(BaseModel):

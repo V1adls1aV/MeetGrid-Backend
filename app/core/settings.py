@@ -14,9 +14,11 @@ ENV_SEPARATOR = "__"
 
 class Settings(SettingsModel):
     APP_NAME: str
+    ALLOW_ORIGINS: str
+    SITE_BASE_URL: str
+
     REDIS: RedisSettings
     GRID: GridSettings
-    ALLOW_ORIGINS: str
 
     @computed_field
     @property

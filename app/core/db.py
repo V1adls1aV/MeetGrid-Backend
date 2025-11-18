@@ -24,3 +24,8 @@ class RedisSettings(BaseModel):
             )
 
         return f"redis://:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DB}"
+
+    @computed_field
+    @cached_property
+    def TTL_SECONDS(self) -> int:
+        return self.TTL_DAYS * 24 * 60 * 60
