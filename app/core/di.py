@@ -4,7 +4,7 @@ import inject
 
 
 def _bind_redis(binder: inject.Binder) -> None:
-    binder.bind(Redis, Redis(url=config.REDIS.URL))
+    binder.bind(Redis, Redis.from_url(config.REDIS.URL))
 
 
 def configure_di() -> None:
