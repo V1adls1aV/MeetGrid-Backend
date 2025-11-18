@@ -1,0 +1,43 @@
+name: meet-grid
+
+services:
+  backend:
+    image: ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+    volumes:
+      - ./app:/app/app:ro
+      - ./pyproject.toml:/app/pyproject.toml:ro
+      - ./uv.lock:/app/uv.lock:ro
+      - ${UV_CACHE_DIR}:${UV_CACHE_DIR}
+    working_dir: /app
+    command: uv run app.py run
+    env_file:
+      - .env
+    environment:
+      APP_HOST: 0.0.0.0
+      APP_PORT: 8000
+      MEET_GRID__REDIS__HOST: redis
+      MEET_GRID__REDIS__PORT: 6379
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    restart: always
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+    expose:
+      - 6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: always
+
+volumes:
+  redis_data:
