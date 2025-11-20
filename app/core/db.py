@@ -12,6 +12,7 @@ class RedisSettings(BaseModel):
     USE_TLS: bool = False
 
     TTL_DAYS: int
+    MAX_RETRY: int
 
     @computed_field
     @cached_property

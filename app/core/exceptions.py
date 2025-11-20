@@ -23,6 +23,12 @@ class TopicNotFoundError(ServiceError):
     status_code: Final[int] = 404
 
 
+class InconsistencyError(ServiceError):
+    """Please, try again. Data can not be updated right now."""
+
+    status_code: Final[int] = 409
+
+
 class ForbiddenActionError(ServiceError):
     """Only topic admin can perform this action."""
 

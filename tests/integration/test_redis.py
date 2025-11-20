@@ -6,7 +6,7 @@ import pytest
 from redis.asyncio import Redis
 
 from app.core.exceptions import TopicNotFoundError
-from app.db import redis as redis_repo
+from app.db.redis import delete_topic, get_topic, patch_topic, save_topic
 from app.models import Topic
 from tests.unit.util import make_interval
 
@@ -28,8 +28,8 @@ def _topic(topic_id: str) -> Topic:
 async def test_save_and_get_topic_roundtrip(redis_client: Redis) -> None:
     stored = _topic("topic-roundtrip")
 
-    await redis_repo.save_topic(stored, redis_client)
-    loaded = await redis_repo.get_topic(stored.topic_id, redis_client)
+    await save_topic(stored, redis_client)
+    loaded = await get_topic(stored.topic_id, redis_client)
 
     assert loaded == stored
 
@@ -37,27 +37,51 @@ async def test_save_and_get_topic_roundtrip(redis_client: Redis) -> None:
 @pytest.mark.asyncio
 async def test_override_topic(redis_client: Redis) -> None:
     stored = _topic("topic-override")
-    await redis_repo.save_topic(stored, redis_client)
+    await save_topic(stored, redis_client)
 
     stored.topic_name = "New Name"
-    await redis_repo.save_topic(stored, redis_client)
+    await save_topic(stored, redis_client)
 
-    loaded = await redis_repo.get_topic(stored.topic_id, redis_client)
+    loaded = await get_topic(stored.topic_id, redis_client)
     assert loaded.topic_name == stored.topic_name
 
 
 @pytest.mark.asyncio
 async def test_get_topic_missing_raises(redis_client: Redis) -> None:
     with pytest.raises(TopicNotFoundError):
-        await redis_repo.get_topic("missing-topic", redis_client)
+        await get_topic("missing-topic", redis_client)
 
 
 @pytest.mark.asyncio
 async def test_delete_topic_removes_data(redis_client: Redis) -> None:
     stored = _topic("topic-deletion")
-    await redis_repo.save_topic(stored, redis_client)
+    await save_topic(stored, redis_client)
 
-    await redis_repo.delete_topic(stored.topic_id, redis_client)
+    await delete_topic(stored.topic_id, redis_client)
 
     with pytest.raises(TopicNotFoundError):
-        await redis_repo.get_topic(stored.topic_id, redis_client)
+        await get_topic(stored.topic_id, redis_client)
+
+
+@pytest.mark.asyncio
+async def test_patch_topic_updates_data(redis_client: Redis) -> None:
+    stored = _topic("topic-patch")
+    await save_topic(stored, redis_client)
+
+    def change_topic_name(topic: Topic) -> None:
+        topic.topic_name = "New Name"
+
+    await patch_topic(stored.topic_id, change_topic_name, redis_client)
+
+    loaded = await get_topic(stored.topic_id, redis_client)
+    assert loaded.topic_name == "New Name"
+
+
+@pytest.mark.asyncio
+async def test_patch_topic_raises_error_on_missing_topic(redis_client: Redis) -> None:
+    with pytest.raises(TopicNotFoundError):
+        await patch_topic(
+            "missing-topic",
+            lambda topic: None,
+            redis_client,
+        )
