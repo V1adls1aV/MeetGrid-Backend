@@ -42,7 +42,14 @@ def _count_buckets(
     constraints: Iterable[Interval], votes: Iterable[list[Interval]]
 ) -> dict[datetime, int]:
     """Counts how many voters cover each allowed 15-minute bucket."""
-    allowed_slots = _collect_allowed_slots(constraints)
+    if not constraints:
+        counts: dict[datetime, int] = {}
+        for user_intervals in votes:
+            for slot in _to_slots(user_intervals):
+                counts[slot] = counts.get(slot, 0) + 1
+        return counts
+
+    allowed_slots = _to_slots(constraints)
     counts = {slot: 0 for slot in allowed_slots}
     for user_intervals in votes:
         for slot in allowed_slots:
@@ -55,10 +62,10 @@ def _count_buckets(
     return counts
 
 
-def _collect_allowed_slots(constraints: Iterable[Interval]) -> list[datetime]:
-    """Expands constraints into sorted bucket start times."""
+def _to_slots(intervals: Iterable[Interval]) -> list[datetime]:
+    """Expands intervals into sorted bucket start times."""
     slots: set[datetime] = set()
-    for window in constraints:
+    for window in intervals:
         slot_start = _ceil_to_slot(window.start)
         while slot_start + SLOT <= window.end:
             slots.add(slot_start)

@@ -119,3 +119,16 @@ def test_constraint_edges_are_respected() -> None:
     ]
     assert simplify(stats.blocks_70) == []
     assert simplify(stats.blocks_50) == []
+
+
+def test_empty_constraints_pick_all_intervals() -> None:
+    base = datetime(2025, 1, 1, 10, 0)
+    get_interval = partial(make_interval, base)
+    votes = {"solo": [get_interval((0, 45))]}
+    stats = build_topic_stats(topic([], votes))
+
+    assert simplify(stats.blocks_90) == [
+        (datetime(2025, 1, 1, 10, 0), datetime(2025, 1, 1, 10, 45))
+    ]
+    assert simplify(stats.blocks_70) == []
+    assert simplify(stats.blocks_50) == []
