@@ -27,7 +27,12 @@ def test_get_topic_returns_empty_stats(client: TestClient) -> None:
 
     assert response.status_code == 200
     assert body["topic"]["topic_id"] == topic_id
-    assert body["stats"] == {"blocks_90": [], "blocks_70": [], "blocks_50": []}
+    assert body["stats"] == {
+        "blocks_90": [],
+        "blocks_70": [],
+        "blocks_50": [],
+        "vote_count": 0,
+    }
 
 
 def test_pick_vote_updates_stats_for_multiple_users(client: TestClient) -> None:

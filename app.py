@@ -34,6 +34,8 @@ def run(
         f"{port}",
         "--workers",
         f"{workers}",
+        "--forwarded-allow-ips",
+        "*",
     ]
     command.extend(["--ssl-certfile", ssl_certfile] if ssl_certfile else [])
     command.extend(["--ssl-keyfile", ssl_keyfile] if ssl_keyfile else [])

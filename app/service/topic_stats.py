@@ -20,8 +20,9 @@ def build_topic_stats(topic: Topic) -> TopicStats:
     """Returns TopicStats with mutually exclusive percentile ladders."""
     bucket_counts = _count_buckets(topic.constraints, topic.votes.values())
     max_people = max(bucket_counts.values(), default=0)
+    vote_count = len(topic.votes)
     if max_people == 0:
-        return TopicStats()
+        return TopicStats(vote_count=vote_count)
 
     ratios = [c[0] for c in RATIO_CONFIG]
     people_ranges = _compute_people_ranges(max_people, ratios)
@@ -35,7 +36,7 @@ def build_topic_stats(topic: Topic) -> TopicStats:
             ratio,
             people_ranges.get(ratio, (0, 0)),
         )
-    return TopicStats(**blocks)
+    return TopicStats(**blocks, vote_count=vote_count)
 
 
 def _count_buckets(

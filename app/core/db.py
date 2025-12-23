@@ -24,7 +24,7 @@ class RedisSettings(BaseModel):
                 f"?ssl_cert_reqs=none&ssl_check_hostname=false"
             )
 
-        return f"redis://:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.DB}"
+        return f"redis://{self.HOST}:{self.PORT}/{self.DB}"
 
     @computed_field
     @cached_property

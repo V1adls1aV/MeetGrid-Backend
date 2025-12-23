@@ -7,14 +7,13 @@ services:
       - ./app:/app/app:ro
       - ./pyproject.toml:/app/pyproject.toml:ro
       - ./uv.lock:/app/uv.lock:ro
-      - ${UV_CACHE_DIR}:${UV_CACHE_DIR}
+      - ./app.py:/app/app.py:ro
+      - ./config.yaml:/app/config.yaml:ro
     working_dir: /app
-    command: uv run app.py run
+    command: uv run app.py run --host 0.0.0.0 --port 8000
     env_file:
       - .env
     environment:
-      APP_HOST: 0.0.0.0
-      APP_PORT: 8000
       MEET_GRID__REDIS__HOST: redis
       MEET_GRID__REDIS__PORT: 6379
     expose:

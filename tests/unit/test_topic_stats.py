@@ -13,6 +13,7 @@ def test_returns_empty_stats_without_constraints() -> None:
     assert stats.blocks_90 == []
     assert stats.blocks_70 == []
     assert stats.blocks_50 == []
+    assert stats.vote_count == 0
 
 
 def test_each_slot_picks_only_one_ratio() -> None:
@@ -39,6 +40,7 @@ def test_each_slot_picks_only_one_ratio() -> None:
     first_block, second_block = stats.blocks_50
     assert (first_block.people_min, first_block.people_max) == (3, 4)
     assert (second_block.people_min, second_block.people_max) == (3, 3)
+    assert stats.vote_count == 6
 
 
 def test_percentile_blocks_are_mutually_exclusive() -> None:
@@ -70,6 +72,7 @@ def test_percentile_blocks_are_mutually_exclusive() -> None:
     ]
     mins = [(block.people_min, block.people_max) for block in stats.blocks_50]
     assert mins == [(6, 6), (5, 5)]
+    assert stats.vote_count == 10
 
 
 def test_day_sections_get_independent_percentiles() -> None:
@@ -105,6 +108,7 @@ def test_day_sections_get_independent_percentiles() -> None:
         (datetime(2025, 1, 2, 16), datetime(2025, 1, 2, 17)),
         (datetime(2025, 1, 2, 19), datetime(2025, 1, 2, 20)),
     ]
+    assert stats.vote_count == 11
 
 
 def test_constraint_edges_are_respected() -> None:
@@ -119,6 +123,7 @@ def test_constraint_edges_are_respected() -> None:
     ]
     assert simplify(stats.blocks_70) == []
     assert simplify(stats.blocks_50) == []
+    assert stats.vote_count == 1
 
 
 def test_empty_constraints_pick_all_intervals() -> None:
@@ -132,6 +137,7 @@ def test_empty_constraints_pick_all_intervals() -> None:
     ]
     assert simplify(stats.blocks_70) == []
     assert simplify(stats.blocks_50) == []
+    assert stats.vote_count == 1
 
 
 def test_constraints_fully_fitting_intervals_are_picked() -> None:
@@ -158,3 +164,4 @@ def test_constraints_fully_fitting_intervals_are_picked() -> None:
     ]
     assert simplify(stats.blocks_70) == []
     assert simplify(stats.blocks_50) == []
+    assert stats.vote_count == 1

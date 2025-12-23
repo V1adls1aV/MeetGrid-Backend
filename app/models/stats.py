@@ -20,3 +20,4 @@ class TopicStats(BaseModel):
     blocks_90: list[StatsInterval] = Field(default_factory=list)
     blocks_70: list[StatsInterval] = Field(default_factory=list)
     blocks_50: list[StatsInterval] = Field(default_factory=list)
+    vote_count: int = Field(default=0, ge=0)
