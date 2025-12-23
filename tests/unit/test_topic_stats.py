@@ -132,3 +132,29 @@ def test_empty_constraints_pick_all_intervals() -> None:
     ]
     assert simplify(stats.blocks_70) == []
     assert simplify(stats.blocks_50) == []
+
+
+def test_constraints_fully_fitting_intervals_are_picked() -> None:
+    base = datetime(2025, 1, 1, 10, 0)
+    get_interval = partial(make_interval, base)
+    constraints = [
+        get_interval((60, 90)),
+        get_interval((120, 150)),
+        get_interval((180, 210)),
+    ]
+    votes = {
+        "solo": [
+            get_interval((60, 90)),
+            get_interval((120, 150)),
+            get_interval((180, 210)),
+        ]
+    }
+    stats = build_topic_stats(topic(constraints, votes))
+
+    assert simplify(stats.blocks_90) == [
+        (datetime(2025, 1, 1, 11, 0), datetime(2025, 1, 1, 11, 30)),
+        (datetime(2025, 1, 1, 12, 0), datetime(2025, 1, 1, 12, 30)),
+        (datetime(2025, 1, 1, 13, 0), datetime(2025, 1, 1, 13, 30)),
+    ]
+    assert simplify(stats.blocks_70) == []
+    assert simplify(stats.blocks_50) == []

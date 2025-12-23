@@ -137,6 +137,24 @@ def _build_blocks(
     current_end: datetime | None = None
 
     for slot in slots:
+        # Close the current block when there is a gap to keep intervals disjoint.
+        if (
+            current_start is not None
+            and current_end is not None
+            and slot != current_end + SLOT
+        ):
+            blocks.append(
+                StatsInterval(
+                    start=current_start,
+                    end=(current_end or current_start) + SLOT,
+                    people_min=current_min or people_range[0],
+                    people_max=current_max or people_range[1],
+                )
+            )
+            current_start = None
+            current_min = current_max = None
+            current_end = None
+
         if slot_labels.get(slot) != ratio:
             if current_start is None:
                 continue
